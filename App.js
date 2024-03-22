@@ -11,43 +11,63 @@ import Scorecard from './screens/Scorecard';
 import SwingRecorder from './screens/SwingRecorder';
 import ShotTracker from './screens/ShotTracker';
 
-
-const TabNav = () => {
-  const Tab = createBottomTabNavigator();
-  return (
-    <Tab.Navigator>
-      <Tab.Screen 
-        name="Home" 
-        component={Home} 
-        options={{
-          tabBarLabel: 'Home',
-          }}/>
-      <Tab.Screen 
-        name="Scorecard" 
-        component={Scorecard} 
-        options={{
-          tabBarLabel: 'Start Round',
-          }}/>
-      <Tab.Screen 
-        name="SwingRecorder" 
-        component={SwingRecorder}
-        options={{
-        tabBarLabel: 'Record Swing',
-      }}/>
-      <Tab.Screen 
-        name="ShotTracker" 
-        component={ShotTracker}
-        options={{
-        tabBarLabel: 'Track Shot',
-      }}/>
-    </Tab.Navigator>
-  );
-};
-
 export default function App() {
+
+  const ScorecardStack = () => {
+    const Stack = createStackNavigator();
+    return (
+     <Stack.Navigator  options={{tabBarLabel: "Scorecard"}}>
+         <Stack.Screen name="Scorecard" component={Scorecard}></Stack.Screen>
+         <Stack.Screen name="SwingRecorder" component={SwingRecorder}></Stack.Screen>
+         <Stack.Screen name="ShotTracker" component={ShotTracker}></Stack.Screen>
+     </Stack.Navigator>
+    );
+  }
+  
+  const TabNav = () => {
+    const Tab = createBottomTabNavigator();
+    return (
+      <Tab.Navigator >
+        <Tab.Screen 
+          name="Home" 
+          component={Home} 
+          options={{
+            tabBarLabel: 'Home',
+            }}/>
+        <Tab.Screen 
+          name="ScorecardStack" 
+          component={ScorecardStack} 
+          />
+        <Tab.Screen 
+          name="SwingRecorder" 
+          component={SwingRecorder}
+          options={{
+          tabBarLabel: 'Record Swing',
+        }}/>
+        <Tab.Screen 
+          name="ShotTracker" 
+          component={ShotTracker}
+          options={{
+          tabBarLabel: 'Track Shot',
+        }}/>
+      </Tab.Navigator>
+    );
+
+  };
+  const HomeStack = () => {
+    const Stack = createStackNavigator();
+    return (
+     <Stack.Navigator>
+         <Stack.Screen name="Home" component={Home}></Stack.Screen>
+         <Stack.Screen name="Scorecard" component={Scorecard}></Stack.Screen>
+         <Stack.Screen name="SwingRecorder" component={SwingRecorder}></Stack.Screen>
+         <Stack.Screen name="ShotTracker" component={ShotTracker}></Stack.Screen>
+     </Stack.Navigator>
+    );
+  }
   return (
     <NavigationContainer>
-      <TabNav />
+      <HomeStack />
     </NavigationContainer>
   );
 }
