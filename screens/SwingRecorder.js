@@ -6,23 +6,40 @@ import * as FileSystem from 'expo-file-system';
 import { useIsFocused } from '@react-navigation/native'; 
 
 export default function SwingRecorder() {
-  const cameraRef = useRef({});
+  const cameraRef = useRef(null);
   const isFocused = useIsFocused();
   const [hasAudioPermission, setHasAudioPermission] = useState(null);
   const [hasCameraPermission, setHasCameraPermission] =useState(null);
-  const [camera, setCamera] = useState(null);
+  //const [camera, setCamera] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
+  const [isRecording, setIsRecording] = useState(false);
+  const [recordedVideoURI, setRecordedVideoURI] = useState(null);
 
-  const takeVideo = async () => {
-    if(camera){
-        const data = await camera.recordAsync()
-        setRecord(data.uri);
-        console.log(data.uri);
+  const onRecordingStart = () => {
+    setIsRecording(true);
+  };
+
+  const onRecordingEnd = () => {
+    setIsRecording(false);
+  };
+
+  const toggleRecording = async () => {
+    if (isRecording) {
+      try {
+        await cameraRef.current.stopRecording();
+      } catch (error) {
+        console.error('Failed to stop recording', error);
+      }
+    } else {
+      try {
+        await cameraRef.current.recordAsync()
+          .then(onRecordingStart)
+          .catch(error => console.error('Failed to start recording', error));
+      } catch (error) {
+        console.error('Failed to start recording', error);
+      }
     }
-  }
-  const stopVideo = async () => {
-    camera.stopRecording();
-  }
+  };
 
   useEffect(() => {
     (async () => {
@@ -41,8 +58,14 @@ export default function SwingRecorder() {
   if (isFocused) {
     return (
     <View style={{flex : 1}}>
-       <Camera ratio="16:9" style={{flex : 1}} ref={cameraRef}/>
-       <Button
+      <Camera 
+        ratio="16:9" 
+        style={{flex : 1}} 
+        ref={cameraRef} 
+        type={Camera.Constants.Type.back}
+      />
+
+      {/* <Button
         title="Flip"
         onPress={() => {
         setType(
@@ -51,9 +74,12 @@ export default function SwingRecorder() {
           : Camera.Constants.Type.back
           );
           }}>
-      </Button>
-      <Button title="Take video" onPress={() => takeVideo()} />
-      <Button title="Stop Video" onPress={() => stopVideo()} />
+      </Button> */}
+
+      <Button
+        title={isRecording ? 'Stop Video' : 'Take Video'}
+        onPress={toggleRecording}
+      />
     </View>
     );  
   }
