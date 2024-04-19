@@ -1,9 +1,20 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { useState, useEffect  } from 'react';
 import data from '../test_data/CardExample.json' 
+import _map from 'lodash.map';
+import _reduce from 'lodash.reduce';
 
 export default function Scorecard() {
-  const [playerScore, updatePlayerScore] = useState(data.scorecard);
+  const [scoreData, updateScoreData] = useState(data.scorecard);
+  
+  const updateScore = (score, hole, player) => {
+    const copy = _clone(scoreData);
+    const index = _findIndex(copy, { hole });
+    copy[index][player] = score;
+
+    updateModalVisibility(false);
+    updateScoreData(copy);
+  };
 
   const Total = props => {
     return (
