@@ -4,6 +4,9 @@ import { Camera } from 'expo-camera';
 import { Video } from 'expo-av';
 import * as FileSystem from 'expo-file-system';
 import { useIsFocused } from '@react-navigation/native'; 
+import VideoPlayer from 'react-native-native-video-player';
+
+const RECS_DIR = FileSystem.documentDirectory + "GA_RECS";
 
 export default function SwingRecorder() {
   const cameraRef = useRef(null);
@@ -11,7 +14,7 @@ export default function SwingRecorder() {
   const [hasAudioPermission, setHasAudioPermission] = useState(null);
   const [hasCameraPermission, setHasCameraPermission] =useState(null);
   //const [camera, setCamera] = useState(null);
-  const [type, setType] = useState(Camera.Constants.Type.back);
+  // const [type, setType] = useState(Camera.Constants.Type.back);
   const [isRecording, setIsRecording] = useState(false);
   const [recordedVideoURI, setRecordedVideoURI] = useState(null);
 
@@ -27,14 +30,16 @@ export default function SwingRecorder() {
     if (isRecording) {
       try {
         await cameraRef.current.stopRecording();
+
       } catch (error) {
         console.error('Failed to stop recording', error);
       }
     } else {
       try {
-        await cameraRef.current.recordAsync()
+        const data = await cameraRef.current.recordAsync()
           .then(onRecordingStart)
           .catch(error => console.error('Failed to start recording', error));
+        setRecordedVideoURI(data.uri)
       } catch (error) {
         console.error('Failed to start recording', error);
       }
