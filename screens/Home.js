@@ -6,6 +6,9 @@ export default function Home({ navigation }) {
 return (
   <View style={styles.container}>
     <Text>Home</Text>
+    <View style={styles.cards}>
+      
+    </View>
     <View style={styles.buttonContainer}>
         <Button 
           title="Scorecard"
@@ -35,6 +38,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   buttonContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    justifyContent: 'flex-end',
+  },
+  cards: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'flex-end',
