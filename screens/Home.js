@@ -7,7 +7,14 @@ return (
   <View style={styles.container}>
     <Text>Home</Text>
     <View style={styles.cards}>
-      
+      <Button
+        title="TrackedShots"
+        onPress={() => navigation.navigate("ShotTrackerHistory")}>
+        My Shots</Button>
+      <Button
+        title="RecordedSwings"
+        onPress={() => navigation.navigate("SwingRecorderHistory")}>
+        My Swings</Button>
     </View>
     <View style={styles.buttonContainer}>
         <Button 
