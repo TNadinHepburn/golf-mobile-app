@@ -9,7 +9,9 @@ import 'react-native-gesture-handler';
 import Home from './screens/Home';
 import Scorecard from './screens/Scorecard';
 import SwingRecorder from './screens/SwingRecorder';
+import SwingRecorderHistory from './screens/SwingRecorderHistory';
 import ShotTracker from './screens/ShotTracker';
+import ShotTrackerHistory from './screens/ShotTrackerHistory';
 
 export default function App() {
 
@@ -61,7 +63,9 @@ export default function App() {
          <Stack.Screen name="Home" component={Home}></Stack.Screen>
          <Stack.Screen name="Scorecard" component={Scorecard}></Stack.Screen>
          <Stack.Screen name="SwingRecorder" component={SwingRecorder}></Stack.Screen>
+         <Stack.Screen name="SwingRecorderHistory" component={SwingRecorderHistory}></Stack.Screen>
          <Stack.Screen name="ShotTracker" component={ShotTracker}></Stack.Screen>
+         <Stack.Screen name="ShotTrackerHistory" component={ShotTrackerHistory}></Stack.Screen>
      </Stack.Navigator>
     );
   }
