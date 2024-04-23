@@ -12,8 +12,11 @@ import SwingRecorder from './screens/SwingRecorder';
 import SwingRecorderHistory from './screens/SwingRecorderHistory';
 import ShotTracker from './screens/ShotTracker';
 import ShotTrackerHistory from './screens/ShotTrackerHistory';
+import * as Location from 'expo-location';
+Location.installWebGeolocationPolyfill();
 
 export default function App() {
+  
 
   const ScorecardStack = () => {
     const Stack = createStackNavigator();

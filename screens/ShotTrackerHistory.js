@@ -5,7 +5,6 @@ import { View } from 'react-native';
 import styled from 'styled-components';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
 import demoShots from '../components/ShotsIDisTIME.json';
 
 
@@ -37,9 +36,9 @@ export default function ShotTrackerHistory({ route, navigation }) {
     };
 
     useEffect(() => {
+      // AsyncStorage.clear()
         let isSubscribed = true;
         if (isSubscribed) {
-            AsyncStorage.clear();
             retrieveHistory();
         }
         return () => (isSubscribed = false);

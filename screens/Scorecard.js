@@ -1,8 +1,8 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { useState, useEffect  } from 'react';
 import data from '../test_data/CardExample.json' 
-import _map from 'lodash.map';
-import _reduce from 'lodash.reduce';
+// import _map from 'lodash.map';
+// import _reduce from 'lodash.reduce';
 
 export default function Scorecard() {
   const [scoreData, updateScoreData] = useState(data.scorecard);
@@ -34,50 +34,50 @@ export default function Scorecard() {
     );
   };
   
-  const Score = ({ scoreCellSelected, player, header, scoreData }) => {
-    return (
-      <View style={styles.container}>
-        <Header text={header}></Header>
-        {_map(scoreData, data => (
-          <TouchableOpacity
-            key={data.hole}
-            style={styles.view}
-            onPress={() => scoreCellSelected(data.hole, player)}>
-            <Text style={styles.text}>{data[player]}</Text>
-          </TouchableOpacity>
-        ))}
-        <Total text={getTotal(scoreData, player)} />
-      </View>
-    );
-  };
+  // const Score = ({ scoreCellSelected, player, header, scoreData }) => {
+  //   return (
+  //     <View style={styles.container}>
+  //       <Header text={header}></Header>
+  //       {_map(scoreData, data => (
+  //         <TouchableOpacity
+  //           key={data.hole}
+  //           style={styles.view}
+  //           onPress={() => scoreCellSelected(data.hole, player)}>
+  //           <Text style={styles.text}>{data[player]}</Text>
+  //         </TouchableOpacity>
+  //       ))}
+  //       <Total text={getTotal(scoreData, player)} />
+  //     </View>
+  //   );
+  // };
 
-  const Hole = ({ scoreData }) => {
-    return (
-      <View style={styles.container}>
-        <Header text="Hole"></Header>
-        {_map(scoreData, data => (
-          <View key={data.hole} style={styles.view}>
-            <Text style={styles.text}>{data.hole}</Text>
-          </View>
-        ))}
-        <Total text="Total" />
-      </View>
-    );
-  };
+  // const Hole = ({ scoreData }) => {
+  //   return (
+  //     <View style={styles.container}>
+  //       <Header text="Hole"></Header>
+  //       {_map(scoreData, data => (
+  //         <View key={data.hole} style={styles.view}>
+  //           <Text style={styles.text}>{data.hole}</Text>
+  //         </View>
+  //       ))}
+  //       <Total text="Total" />
+  //     </View>
+  //   );
+  // };
 
-  const Par = ({ scoreData }) => {
-    return (
-      <View style={styles.container}>
-        <Header text="Par"></Header>
-        {_map(scoreData, data => (
-          <View key={data.hole} style={styles.view}>
-            <Text style={styles.text}>{data.par}</Text>
-          </View>
-        ))}
-        <Total text="27" />
-      </View>
-    );
-  };
+  // const Par = ({ scoreData }) => {
+  //   return (
+  //     <View style={styles.container}>
+  //       <Header text="Par"></Header>
+  //       {_map(scoreData, data => (
+  //         <View key={data.hole} style={styles.view}>
+  //           <Text style={styles.text}>{data.par}</Text>
+  //         </View>
+  //       ))}
+  //       <Total text="27" />
+  //     </View>
+  //   );
+  // };
   
 
 
