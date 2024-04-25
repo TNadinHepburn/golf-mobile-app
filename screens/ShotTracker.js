@@ -49,11 +49,10 @@ export default function ShotTracker({ navigation }) {
   const startTracking = () => {
     setTimestamp(Date.now())
     trackingData.timestamp = timestamp
+    trackingData.club = clubUsed;
     setTrackingData(trackingData)
     //TODO 2: Get watch id from navigator.geolocation.watchPosition and set this using setWatchID
     navigator.geolocation.getCurrentPosition(getStartCoordinates, onGeolocationError, {});
-    trackingData.club = clubUsed;
-    setTrackingData(trackingData)
     setWatchID(navigator.geolocation.watchPosition(onGeolocation, onGeolocationError, {}));
   };
 
