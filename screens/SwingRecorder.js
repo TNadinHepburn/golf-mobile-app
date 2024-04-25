@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
-import { StyleSheet ,Text, View, Button, Image} from 'react-native';
+import { StyleSheet ,Text, View, Button, Image, SafeAreaView} from 'react-native';
 import { Camera, CameraType } from "expo-camera";
 import { Video } from 'expo-av';
 import * as FileSystem from 'expo-file-system';
 import { useIsFocused } from '@react-navigation/native'; 
+import { saveToLibraryAsync } from 'expo-media-library';
 // import VideoPlayer from 'react-native-native-video-player';
 
 
@@ -14,8 +15,10 @@ export default function SwingRecorder() {
   const isFocused = useIsFocused();  
   const [statusCamera, requestCameraPermission] = Camera.useCameraPermissions();
   const [statusAudio, requestAudioPermission] = Camera.useMicrophonePermissions();
+  const [videoURI, setVideoURI] = useState(null);
   const [recording , setRecording] = useState(false);
   const [guide , setGuide] = useState(true);
+  const [handed, setHanded] = useState(true);
 
   const enableGuide = () => {
     setGuide(true)
@@ -26,7 +29,7 @@ export default function SwingRecorder() {
 
   };
   const flipGuide = async () => {
-
+    handed ? setHanded(false) : setHanded(true);
   };
 
   const requestCameraPermissions = async () => {
@@ -56,12 +59,13 @@ export default function SwingRecorder() {
     }
   };
 
-  const startVideo = async () => {
+  const startVideo = () => {
     try{
-      saveURI = `${VID_DIR}/golf_${Date.now()}.mp4`
       setRecording(true)
-      videoObj = await cameraRef.current.recordAsync();
-      result = await FileSystem.moveAsync({from: videoObj.uri, to: saveURI});
+      cameraRef.current.recordAsync().then((recordedVideo) => {
+        setVideoURI(recordedVideo);
+        setRecording(false);
+      });
     }
     catch (e) {
       console.log(e)
@@ -71,57 +75,72 @@ export default function SwingRecorder() {
 
   const endVideo = async () => {
     try{
-      // saveURI = `${VID_DIR}/golf_${Date.now()}.mp4`
-      videoObj = await cameraRef.current.stopRecording();
       setRecording(false)
-      // result = await FileSystem.moveAsync({from: videoObj.uri, to: saveURI});
+      cameraRef.current.stopRecording();
     }
     catch (e) {
       console.log(e)
+      setRecording(false)
     }
   };
+
+  const saveVideo = async () => {
+    saveURI = `${VID_DIR}/swing_${Date.now()}.mp4`
+    result = await FileSystem.moveAsync({from: videoURI.uri, to: saveURI});
+    setVideoURI(undefined);
+  }
 
   useEffect(() => {
     requestCameraPermission();
     requestAudioPermission();
+    // requestLibraryPermission();
     ensureDirExists();
   })
-  
  
-  if (isFocused) {
+
+ 
+  if (isFocused) {  
+    
+    if(videoURI){
+    return(
+      <SafeAreaView style={styles.camera}>
+        <Video style={styles.video} source={{uri: videoURI.uri}} resizeMode='contain' isLooping useNativeControls>
+          <Button title="Save" onPress={saveVideo}></Button>
+        </Video>
+      </SafeAreaView>
+    )
+  }
+  else {
     return (
-    <View style={{flex : 1}}>
-      <Camera ratio="16:9" style={styles.camera} ref={cameraRef}/>
+      <Camera ratio="16:9"  ref={cameraRef} style={styles.camera}>
+        <View style={styles.buttonContainer}>
       {/* {guide ?
         flipGuide ?
         <Image source={require('../assets/splash.png')}></Image>
         :
         <Image source={require('../assets/icon.png')}></Image>
-      :
-      <View />
-      } */}
-      {recording ?
-        <View style={styles.buttonContainer}>
-        <Button title='EndVideo' onPress={endVideo} style={styles.button}>End</Button>
-        </View>
         :
-        <View style={styles.buttonContainer}>
-        <Button title='StartVideo' onPress={startVideo} style={styles.button}>Start</Button>
-        </View>
-
-      }
+        <View />
+      } */}
+        <Button title={recording ? 'EndVideo' : 'StartVideo'} onPress={recording ? endVideo : startVideo}></Button>
       {/* {guide ?
       <View>
-        <Button title='flip guide' onPress={flipGuide}></Button>
-        <Button title='disable guide' onPress={disableGuide}></Button>
+      <Button title='flip guide' onPress={flipGuide}></Button>
+      <Button title='disable guide' onPress={disableGuide}></Button>
       </View>
       :
       <Button title='enable guide' onPress={enableGuide}></Button>
-      } */}
+    } */}
     </View>
+    </Camera>
     );  
   }
+  }
   else {
+    if (recording){
+      cameraRef.current.stopRecording();
+      setRecording(false);
+    }
     return <View/>
   }
  
@@ -223,16 +242,14 @@ const styles = StyleSheet.create({
   // },
   camera: {
     flex: 1,
+    alignItems: 'centre',
+    justifyContent: 'center',
   },
   buttonContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    backgroundColor: 'transparent',
-    margin: 64,
-  },
-  button: {
-    flex: 1,
     alignSelf: 'flex-end',
-    alignItems: 'center',
+  },
+  video: {
+    flex: 1,
+    alignSelf: 'strech',
   },
 });
