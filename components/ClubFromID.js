@@ -1,4 +1,4 @@
-const clubList = {
+export const clubList = {
     "1W": "Driver",
     "3W": "3 Wood",
     "5W": "5 Wood",

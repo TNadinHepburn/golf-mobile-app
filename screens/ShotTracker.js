@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
 import { useState, useEffect  } from 'react';
-import { clubFromID } from '../components/ClubFromID';
+import { clubFromID, clubList } from '../components/ClubFromID';
 import { calculateDistance } from '../components/CalculateDistance';
 import MapView, {Marker, Polyline, PROVIDER_GOOGLE} from 'react-native-maps';
 import SelectDropdown from 'react-native-select-dropdown'
@@ -9,6 +9,8 @@ import styled from 'styled-components';
 import colours from '../components/Colours';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Location from 'expo-location';
+import {Picker} from '@react-native-picker/picker';
+
 
 export default function ShotTracker({ navigation }) {
   const [timestamp, setTimestamp] = useState(0)
@@ -49,8 +51,6 @@ export default function ShotTracker({ navigation }) {
   const startTracking = () => {
     setTimestamp(Date.now())
     trackingData.timestamp = timestamp
-    trackingData.club = clubUsed;
-    setTrackingData(trackingData)
     //TODO 2: Get watch id from navigator.geolocation.watchPosition and set this using setWatchID
     navigator.geolocation.getCurrentPosition(getStartCoordinates, onGeolocationError, {});
     setWatchID(navigator.geolocation.watchPosition(onGeolocation, onGeolocationError, {}));
@@ -60,7 +60,8 @@ export default function ShotTracker({ navigation }) {
     
     navigator.geolocation.clearWatch(watchID);
     // Store the new route
-
+    trackingData.club = clubUsed
+    setTrackingData(trackingData)
     // navigator.geolocation.getCurrentPosition(getEndCoordinates, onGeolocationError, {});
     
     storeShot();
@@ -109,9 +110,20 @@ const fitAllMarkers = (coords) => {
 
 return (
   <View style={styles.container}>
+<Picker selectedValue={clubUsed} 
+          onValueChange={(itemValue, itemIndex) =>
+          setClubUsed(itemValue)
+          }>
+            {Object.keys(clubList).map((key) => {
+              return (
+                <Picker.Item label={clubList[key]} value={key} key={key}></Picker.Item>
+              )
+            })}
+
+          </Picker>
+
     {watchID ?
       <Submit>
-        {/* TODO 8: Call stopTracking when pressed */}
         <TouchButton onPress={stopTracking}>
           <BtnText>STOP</BtnText>
         </TouchButton>
@@ -120,8 +132,18 @@ return (
       <View style={{ paddingLeft: "5%" }}> 
         <ItemsLayout>
           <Holder>
+          <Picker selectedValue={clubUsed} 
+          onValueChange={(itemValue, itemIndex) =>
+          setClubUsed(itemValue)
+          }>
+            {Object.keys(clubList).map((key) => {
+              return (
+                <Picker.Item label={clubList[key]} value={key} key={key}></Picker.Item>
+              )
+            })}
+
+          </Picker>
                 <Submit>
-              {/* TODO 4: Call startTracking when pressed */}
               <TouchButton title="Track" onPress={startTracking}>
                 <BtnText>Track</BtnText>
               </TouchButton>
