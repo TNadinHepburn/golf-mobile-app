@@ -86,13 +86,13 @@ return (
     <View style={styles.container}>
       <Text>Scorecard</Text>
         
-      <Hole scoreData={scoreData} />
+      {/* <Hole scoreData={scoreData} />
       <Par scoreData={scoreData} />
       <Score
         header="Player Score"
         scoreData={scoreData}
         // scoreCellSelected={scoreCellSelected}
-      />
+      /> */}
     </View>
   </View>
 );
