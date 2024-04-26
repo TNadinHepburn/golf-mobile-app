@@ -35,23 +35,23 @@ export default function SwingRecorderHistory() {
 
       const gallery = [];
       const rowWidth = 5;
-      for (let i = 0; i < (allVideos.length / rowWidth) + 1; i++) {
-        gallery.push(<Row rowVideos={allVideos.slice(i*rowWidth, i*rowWidth+rowWidth)} key={i}></Row>)
-      }
       if (allVideos){
+        for (let i = 0; i < (allVideos.length / rowWidth) + 1; i++) {
+          gallery.push(<Row rowVideos={allVideos.slice(i*rowWidth, i*rowWidth+rowWidth)} key={i}></Row>)
+        }
         return (    
             <View style={styles.container}>
                 <ScrollView contentContainerStyle={{flexGrow: 1}}>
-                    <Text>{allVideos}</Text>
+                    <Text>{gallery}</Text>
                 </ScrollView>
         </View>
             );
             }
-    else{
-        return (
-            <View/>
-        )
-    }
+      else{
+          return (
+              <View/>
+          )
+      }
 }
 
 
@@ -69,4 +69,4 @@ const styles = StyleSheet.create({
     video: {
       height: 170
     }
-  });
+});

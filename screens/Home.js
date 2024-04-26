@@ -5,16 +5,16 @@ export default function Home({ navigation }) {
 
 return (
   <View style={styles.container}>
-    <Text>Home</Text>
     <View style={styles.cards}>
       <Button
-        title="TrackedShots"
-        onPress={() => navigation.navigate("ShotTrackerHistory")}>
-        My Shots</Button>
+        title="Previous Rounds"
+        onPress={() => navigation.navigate("ScorecardHistory")}/>
       <Button
-        title="RecordedSwings"
-        onPress={() => navigation.navigate("SwingRecorderHistory")}>
-        My Swings</Button>
+        title="Tracked Shots"
+        onPress={() => navigation.navigate("ShotTrackerHistory")}/>
+      <Button
+        title="Recorded Swings"
+        onPress={() => navigation.navigate("SwingRecorderHistory")}/>
     </View>
     <View style={styles.buttonContainer}>
         <Button 
@@ -23,14 +23,14 @@ return (
             Scorecard
         </Button>
         <Button 
-          title="SwingRecorder"
-          onPress={() => navigation.navigate("SwingRecorder")}>
-            Record Swing
-        </Button>
-        <Button 
           title="ShotTracker"
           onPress={() => navigation.navigate("ShotTracker")}>
             Track Shot
+        </Button>
+        <Button 
+          title="SwingRecorder"
+          onPress={() => navigation.navigate("SwingRecorder")}>
+            Record Swing
         </Button>
     </View>
   </View>
@@ -45,15 +45,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   buttonContainer: {
-    flex: 1,
+    flex:1,
     flexDirection: 'row',
-    alignItems: 'flex-end',
-    justifyContent: 'flex-end',
+    justifyContent: 'space-around',
+    alignItems: 'center',
   },
   cards: {
     flex: 1,
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    justifyContent: 'flex-end',
+    flexDirection: 'collumn',
   },
 });

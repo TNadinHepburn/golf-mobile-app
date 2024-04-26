@@ -1,18 +1,12 @@
 import { calculateDistance } from '../components/CalculateDistance';
 import { clubFromID } from '../components/ClubFromID';
+import { timestampToDate } from '../components/TimestampToDate';
 import { useState, useEffect, useRef } from 'react';
 import { View } from 'react-native';
 import styled from 'styled-components';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import demoShots from '../components/ShotsIDisTIME.json';
-
-
-const timestampToDate = (time) => {
-    const date = new Date(time);
-    return date.toLocaleDateString('en-GB', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit'});
-  };
-
 
 export default function ShotTrackerHistory({ route, navigation }) {
     const [history, setHistory] = useState({})

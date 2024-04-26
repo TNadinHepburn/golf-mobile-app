@@ -8,6 +8,8 @@ import 'react-native-gesture-handler';
 
 import Home from './screens/Home';
 import Scorecard from './screens/Scorecard';
+import ScorecardHistory from './screens/ScorecardHistory';
+import ScorecardView from './screens/ScorecardView';
 import SwingRecorder from './screens/SwingRecorder';
 import SwingRecorderHistory from './screens/SwingRecorderHistory';
 import ShotTracker from './screens/ShotTracker';
@@ -16,55 +18,15 @@ import * as Location from 'expo-location';
 Location.installWebGeolocationPolyfill();
 
 export default function App() {
-  
-
-  const ScorecardStack = () => {
-    const Stack = createStackNavigator();
-    return (
-     <Stack.Navigator  options={{tabBarLabel: "Scorecard"}}>
-         <Stack.Screen name="Scorecard" component={Scorecard}></Stack.Screen>
-         <Stack.Screen name="SwingRecorder" component={SwingRecorder}></Stack.Screen>
-         <Stack.Screen name="ShotTracker" component={ShotTracker}></Stack.Screen>
-     </Stack.Navigator>
-    );
-  }
-  
-  const TabNav = () => {
-    const Tab = createBottomTabNavigator();
-    return (
-      <Tab.Navigator >
-        <Tab.Screen 
-          name="Home" 
-          component={Home} 
-          options={{
-            tabBarLabel: 'Home',
-            }}/>
-        <Tab.Screen 
-          name="ScorecardStack" 
-          component={ScorecardStack} 
-          />
-        <Tab.Screen 
-          name="SwingRecorder" 
-          component={SwingRecorder}
-          options={{
-          tabBarLabel: 'Record Swing',
-        }}/>
-        <Tab.Screen 
-          name="ShotTracker" 
-          component={ShotTracker}
-          options={{
-          tabBarLabel: 'Track Shot',
-        }}/>
-      </Tab.Navigator>
-    );
-
-  };
+     
   const HomeStack = () => {
     const Stack = createStackNavigator();
     return (
      <Stack.Navigator>
          <Stack.Screen name="Home" component={Home}></Stack.Screen>
          <Stack.Screen name="Scorecard" component={Scorecard}></Stack.Screen>
+         <Stack.Screen name="ScorecardHistory" component={ScorecardHistory}></Stack.Screen>
+         <Stack.Screen name="ScorecardView" component={ScorecardView}></Stack.Screen>
          <Stack.Screen name="SwingRecorder" component={SwingRecorder}></Stack.Screen>
          <Stack.Screen name="SwingRecorderHistory" component={SwingRecorderHistory}></Stack.Screen>
          <Stack.Screen name="ShotTracker" component={ShotTracker}></Stack.Screen>

@@ -79,8 +79,11 @@ export default function ShotTracker({ navigation }) {
       if (value !== null) {
         data = JSON.parse(value);
         Object.assign(data, { [timestamp]: trackingData });
-        await AsyncStorage.setItem('shots', JSON.stringify(data));
       }
+      else {
+        data = { [timestamp]: trackingData };
+      }
+      await AsyncStorage.setItem('shots', JSON.stringify(data));
     } 
     catch (error) {
       console.log(error);
@@ -110,17 +113,17 @@ const fitAllMarkers = (coords) => {
 
 return (
   <View style={styles.container}>
-<Picker selectedValue={clubUsed} 
-          onValueChange={(itemValue, itemIndex) =>
-          setClubUsed(itemValue)
-          }>
-            {Object.keys(clubList).map((key) => {
-              return (
-                <Picker.Item label={clubList[key]} value={key} key={key}></Picker.Item>
-              )
-            })}
+    <Picker selectedValue={clubUsed} 
+      onValueChange={(itemValue, itemIndex) =>
+      setClubUsed(itemValue)
+      }>
+        {Object.keys(clubList).map((key) => {
+          return (
+            <Picker.Item label={clubList[key]} value={key} key={key}></Picker.Item>
+          )
+        })}
 
-          </Picker>
+    </Picker>
 
     {watchID ?
       <Submit>
@@ -132,7 +135,7 @@ return (
       <View style={{ paddingLeft: "5%" }}> 
         <ItemsLayout>
           <Holder>
-          <Picker selectedValue={clubUsed} 
+          {/* <Picker selectedValue={clubUsed} 
           onValueChange={(itemValue, itemIndex) =>
           setClubUsed(itemValue)
           }>
@@ -142,7 +145,7 @@ return (
               )
             })}
 
-          </Picker>
+          </Picker> */}
                 <Submit>
               <TouchButton title="Track" onPress={startTracking}>
                 <BtnText>Track</BtnText>
