@@ -1,112 +1,116 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Button, ScrollView, TextInput } from 'react-native';
 import { useState, useEffect  } from 'react';
-import data from '../test_data/CardExample.json' 
+import startData from '../components/Card9HoleExample.json' 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 // import _map from 'lodash.map';
 // import _reduce from 'lodash.reduce';
 
-export default function Scorecard() {
-  const [scoreData, updateScoreData] = useState(data.scorecard);
+export default function Scorecard({ navigation }) {
+  const [scoreData, updateScoreData] = useState(startData.scorecard);
+  const [timestamp, setTimestamp] = useState(Date.now());
   
-  const updateScore = (score, hole, player) => {
-    const copy = _clone(scoreData);
-    const index = _findIndex(copy, { hole });
-    copy[index][player] = score;
+  const storeSorecard = async () => {
+    try {
+      const value = await AsyncStorage.getItem('scorecards'); 
+      if (value !== null) {
+        data = JSON.parse(value);
+        Object.assign(data, { [timestamp]: scoreData });
+      }
+      else {
+        data = { [timestamp]: scoreData };
+      }
+      await AsyncStorage.setItem('scorecards', JSON.stringify(data));
+    } 
+    catch (error) {
+      console.log(error);
+    }
+  }
 
-    updateModalVisibility(false);
-    updateScoreData(copy);
-  };
+  const updateScore = (newScore, hole) => {
+    const data = scoreData;
+    const holeIndex = data.findIndex(dict => dict.hole === hole);
+    data[holeIndex].score = newScore
+    updateScoreData(data)
+  }
 
-  const Total = props => {
-    return (
-      <View style={styles.view}>
-        <Text style={styles.text}>{props.text}</Text>
-      </View>
-    );
-  };
-
-  const getTotal = (scoreData, player) => {
-    return _reduce(
-      scoreData,
-      (sum, index) => {
-        return sum + index[player];
-      },
-      0
-    );
-  };
-  
-  // const Score = ({ scoreCellSelected, player, header, scoreData }) => {
+  // const Row = ({data}) => {
   //   return (
-  //     <View style={styles.container}>
-  //       <Header text={header}></Header>
-  //       {_map(scoreData, data => (
-  //         <TouchableOpacity
-  //           key={data.hole}
-  //           style={styles.view}
-  //           onPress={() => scoreCellSelected(data.hole, player)}>
-  //           <Text style={styles.text}>{data[player]}</Text>
-  //         </TouchableOpacity>
-  //       ))}
-  //       <Total text={getTotal(scoreData, player)} />
-  //     </View>
-  //   );
-  // };
+  //     <ScrollView>
+  //       <Text style={styles.rowItem}>{data.hole}</Text>
+  //       <Text style={styles.rowItem}>{data.par}</Text>
+  //         {/* keyboardType='numeric' 
+  //         maxLength={1} */}        
+  //       <TextInput 
+  //         style={styles.rowItem} 
+  //         keyboardType='numeric'
+  //         maxLength={2}
+  //         onChangeText={text => updateScore(text,data.hole)}
+  //         placeholder={data.par}>
+  //           {data.score}
+  //       </TextInput>
 
-  // const Hole = ({ scoreData }) => {
-  //   return (
-  //     <View style={styles.container}>
-  //       <Header text="Hole"></Header>
-  //       {_map(scoreData, data => (
-  //         <View key={data.hole} style={styles.view}>
-  //           <Text style={styles.text}>{data.hole}</Text>
-  //         </View>
-  //       ))}
-  //       <Total text="Total" />
-  //     </View>
-  //   );
-  // };
+  //     </ScrollView>
+  //   )
+  // }
 
-  // const Par = ({ scoreData }) => {
-  //   return (
-  //     <View style={styles.container}>
-  //       <Header text="Par"></Header>
-  //       {_map(scoreData, data => (
-  //         <View key={data.hole} style={styles.view}>
-  //           <Text style={styles.text}>{data.par}</Text>
-  //         </View>
-  //       ))}
-  //       <Total text="27" />
-  //     </View>
-  //   );
-  // };
-  
-
-
-return (
-  <View style={styles.container}>
+  console.log(scoreData)
+  return (
     <View style={styles.container}>
-      <Text>Scorecard</Text>
-        
-      {/* <Hole scoreData={scoreData} />
-      <Par scoreData={scoreData} />
-      <Score
-        header="Player Score"
-        scoreData={scoreData}
-        // scoreCellSelected={scoreCellSelected}
-      /> */}
+      <View style={styles.scorecardContainer}>
+        {scoreData.map((data) => {
+          // <Row rowdata={data}></Row>
+          return(
+          <View key={data.hole} style={styles.rowItem}>
+            <Text>{data.hole}</Text>
+            <Text >{data.par}</Text>
+              {/* keyboardType='numeric' 
+              maxLength={1} */}        
+            <TextInput 
+              keyboardType='numeric'
+              maxLength={2}
+              onChangeText={text => updateScore(text,data.hole)}
+              >
+                {data.score}
+            </TextInput>
+          </View>)
+        })}
     </View>
-  </View>
-);
+      <View style={styles.buttonContainer}>
+        <Button title='Save Round' onPress={storeSorecard}></Button>
+        <Button title='Track Shot' onPress={() => navigation.navigate("ShotTracker")}></Button>
+        <Button title='Record Swing' onPress={() => navigation.navigate("SwingRecorder")}></Button>
+      </View>
+      </View>
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'spcae-between',
+  },
+  scorecardContainer: {
+    flex: 1,
+    padding: 10,
   },
   buttonContainer: {
-    flex: 2,
     flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    padding: 10,
+    backgroundColor: '#eee',
+  },
+  button: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#007bff',
+    borderRadius: 5,
+    paddingVertical: 10,
+    marginHorizontal: 5,
+  },
+  rowItem: {
+    marginBottom: 10,
+
   },
 });
