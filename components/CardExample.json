@@ -1,0 +1,95 @@
+{
+    "scorecard": [
+      {
+        "hole": 1,
+        "par": 4,
+        "score": null
+      },
+      {
+        "hole": 2,
+        "par": 3,
+        "score": null
+      },
+      {
+        "hole": 3,
+        "par": 4,
+        "score": null
+      },
+      {
+        "hole": 4,
+        "par": 4,
+        "score": null
+      },
+      {
+        "hole": 5,
+        "par": 5,
+        "score": null
+      },
+      {
+        "hole": 6,
+        "par": 5,
+        "score": null
+      },
+      {
+        "hole": 7,
+        "par": 4,
+        "score": null
+      },
+      {
+        "hole": 8,
+        "par": 4,
+        "score": null
+      },
+      {
+        "hole": 9,
+        "par": 4,
+        "score": null
+      },
+      {
+        "hole": 10,
+        "par": 4,
+        "score": null
+
+      },
+      {
+        "hole": 11,
+        "par": 4,
+        "score": null
+      },
+      {
+        "hole": 12,
+        "par": 3,
+        "score": null
+      },
+      {
+        "hole": 13,
+        "par": 4,
+        "score": null
+      },
+      {
+        "hole": 14,
+        "par": 4,
+        "score": null
+      },
+      {
+        "hole": 15,
+        "par": 5,
+        "score": null
+      },
+      {
+        "hole": 16,
+        "par": 5,
+        "score": null
+      },
+      {
+        "hole": 17,
+        "par": 4,
+        "score": null
+      },
+      {
+        "hole": 18,
+        "par": 4,
+        "score": null
+      }
+    ]
+  }
