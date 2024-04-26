@@ -64,8 +64,8 @@ export default function ScorecardHistory({ route, navigation }) {
               </RowStyle>
               <DivideHeader />
               {Object.keys(history).map((item) => (
-              <TouchableOpacity onPress={() => navigation.navigate("ScorecardView", { scorecard: history[item] })}> 
-                  <RowStyle key={item}>
+              <TouchableOpacity key={item} onPress={() => navigation.navigate("ScorecardView", { scorecard: history[item] })}> 
+                  <RowStyle>
                     <ColumnStyle key="col1">
                       <ColumnText>{timestampToDate(parseInt(item))}</ColumnText>
                     </ColumnStyle>
