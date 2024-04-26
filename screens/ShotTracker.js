@@ -1,8 +1,8 @@
-import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Button } from 'react-native';
 import { useState, useEffect  } from 'react';
 import { clubFromID, clubList } from '../components/ClubFromID';
-import { calculateDistance } from '../components/CalculateDistance';
 import MapView, {Marker, Polyline, PROVIDER_GOOGLE} from 'react-native-maps';
+import mapStyle from '../components/MapStyle'
 import SelectDropdown from 'react-native-select-dropdown'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import styled from 'styled-components';
@@ -14,7 +14,7 @@ import {Picker} from '@react-native-picker/picker';
 
 export default function ShotTracker({ navigation }) {
   const [timestamp, setTimestamp] = useState(0)
-  const [trackingData, setTrackingData] = useState({end:{},start:{},timestamp:0,club:"8I"});
+  const [trackingData, setTrackingData] = useState({timestamp:0,start:{},end:{},club:"8I"});
   const [watchID, setWatchID] = useState(false);
   const [clubUsed, setClubUsed] = useState('9I');
   const [distance, setDistance] = useState(null);
@@ -38,16 +38,7 @@ export default function ShotTracker({ navigation }) {
     console.log('start tracking data: ', trackingData)
     setTrackingData(trackingData);
   };
-  const getEndCoordinates = (position) => {
-    const g = {latitude: position.coords.latitude,
-      longitude: position.coords.longitude};
-    trackingData.end = g;
-    console.log('end tracking data: ', trackingData)
-    setTrackingData(trackingData);
-  };
-
-
-
+  
   const startTracking = () => {
     setTimestamp(Date.now())
     trackingData.timestamp = timestamp
@@ -57,12 +48,10 @@ export default function ShotTracker({ navigation }) {
   };
 
   const stopTracking = () => {
-    
     navigator.geolocation.clearWatch(watchID);
     // Store the new route
     trackingData.club = clubUsed
     setTrackingData(trackingData)
-    // navigator.geolocation.getCurrentPosition(getEndCoordinates, onGeolocationError, {});
     
     storeShot();
 
@@ -111,8 +100,44 @@ const fitAllMarkers = (coords) => {
   }
 }
 
+// customMapStyle={mapStyle}      
 return (
   <View style={styles.container}>
+    {/* <View>
+      <MapView
+        customMapStyle={mapStyle}
+        initialRegion={{
+          latitude: 53.229850,
+          longitude: -0.553690,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        }}
+        // mapType='satellite'
+        provider={PROVIDER_GOOGLE}
+        ref={(ref) => {googlemap = ref;}}
+      >
+      </MapView>
+    </View> */}
+
+    {watchID ?
+      <Submit>
+        <TouchButton onPress={stopTracking}>
+          <BtnText>End Shot</BtnText>
+        </TouchButton>
+      </Submit>
+    : <RowStyle>
+      <View style={{ paddingLeft: "5%" }}> 
+        <ItemsLayout>
+          <Holder>
+                <Submit>
+              <TouchButton title="Track" onPress={startTracking}>
+                <BtnText>Track Shot</BtnText>
+              </TouchButton>
+                </Submit>
+          </Holder>
+        </ItemsLayout>
+      </View>
+    </RowStyle> }
     <Picker selectedValue={clubUsed} 
       onValueChange={(itemValue, itemIndex) =>
       setClubUsed(itemValue)
@@ -124,37 +149,6 @@ return (
         })}
 
     </Picker>
-
-    {watchID ?
-      <Submit>
-        <TouchButton onPress={stopTracking}>
-          <BtnText>STOP</BtnText>
-        </TouchButton>
-      </Submit>
-    : <RowStyle>
-      <View style={{ paddingLeft: "5%" }}> 
-        <ItemsLayout>
-          <Holder>
-          {/* <Picker selectedValue={clubUsed} 
-          onValueChange={(itemValue, itemIndex) =>
-          setClubUsed(itemValue)
-          }>
-            {Object.keys(clubList).map((key) => {
-              return (
-                <Picker.Item label={clubList[key]} value={key} key={key}></Picker.Item>
-              )
-            })}
-
-          </Picker> */}
-                <Submit>
-              <TouchButton title="Track" onPress={startTracking}>
-                <BtnText>Track</BtnText>
-              </TouchButton>
-                </Submit>
-          </Holder>
-        </ItemsLayout>
-      </View>
-    </RowStyle> }
 </View>
 );
 }
