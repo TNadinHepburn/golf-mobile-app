@@ -3,13 +3,13 @@ import { StyleSheet, View, Text } from 'react-native';
 import styled from 'styled-components';
 
 
-export default function ScorecardHistory({ route, navigation }) {
-    const {scorecard} = route.params;
-
+export default function ScorecardView({ route, navigation }) {
+    const {scorecard, timestamp} = route.params;
+    console.log(timestamp);
     return(
         <Container>
         <Body>
-          <HeaderText>My Shots</HeaderText>
+            <HeaderText>Round: {timestamp}</HeaderText>
           <View>
             <RowStyle style={{paddingLeft: 10, paddingRight: 10}}>
               <ColumnStyle key="th1">
@@ -45,22 +45,6 @@ export default function ScorecardHistory({ route, navigation }) {
           </View>
         </Body>
       </Container>
-    )
-
-    
-    return(
-        <View style={styles.container}>
-            {scorecard.map((data) => {
-                return(
-                    <View style={styles.scorecardContainer}>
-                        <Text style={styles.rowItem}>{data.hole}</Text>
-                        <Text style={styles.rowItem}>{data.par}</Text>
-                        <Text style={styles.rowItem}>{data.score}</Text>
-                    </View>
-                )
-                })
-            }
-    </View>
     )
 }
 

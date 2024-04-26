@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Button, ScrollView, TextInput } from 'react-native';
+import { StyleSheet, Text, View, Button, ScrollView, TextInput, TouchableOpacity } from 'react-native';
 import { useState, useEffect  } from 'react';
 import startData from '../components/Card9HoleExample.json' 
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -56,7 +56,7 @@ export default function Scorecard({ navigation }) {
   console.log(scoreData)
   return (
     <View style={styles.container}>
-      <View style={styles.scorecardContainer}>
+      <ScrollView style={styles.scorecardContainer}>
         {scoreData.map((data) => {
           // <Row rowdata={data}></Row>
           return(
@@ -74,7 +74,7 @@ export default function Scorecard({ navigation }) {
             </TextInput>
           </View>)
         })}
-    </View>
+    </ScrollView>
       <View style={styles.buttonContainer}>
         <Button title='Save Round' onPress={storeSorecard}></Button>
         <Button title='Track Shot' onPress={() => navigation.navigate("ShotTracker")}></Button>
