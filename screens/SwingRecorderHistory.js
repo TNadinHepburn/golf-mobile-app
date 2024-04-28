@@ -13,7 +13,7 @@ export default function SwingRecorderHistory() {
           <View style={styles.row}>
           {videos.map((video) => (
               <View style={styles.videoContainer} key={video}>
-                <Video source={{'uri': `${dir}/${video}`}} style={styles.video} />
+                <Video source={{'uri': `${VID_DIR}/${video}`}} style={styles.video} />
               </View>
             ))}
           </View>
@@ -35,7 +35,7 @@ export default function SwingRecorderHistory() {
 
       const gallery = [];
       const rowWidth = 5;
-      if (allVideos){
+      if (allVideos.length){
         for (let i = 0; i < (allVideos.length / rowWidth) + 1; i++) {
           gallery.push(<Row rowVideos={allVideos.slice(i*rowWidth, i*rowWidth+rowWidth)} key={i}></Row>)
         }
