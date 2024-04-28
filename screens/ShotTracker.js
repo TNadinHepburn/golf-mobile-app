@@ -3,6 +3,7 @@ import { useState, useEffect  } from 'react';
 import { clubFromID, clubList } from '../components/ClubFromID';
 import { calculateDistance } from '../components/CalculateDistance';
 import MapView, {Marker, Polyline, PROVIDER_GOOGLE} from 'react-native-maps';
+import mapStyle from '../components/MapStyle'
 import SelectDropdown from 'react-native-select-dropdown'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import styled from 'styled-components';
@@ -11,13 +12,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Location from 'expo-location';
 import {Picker} from '@react-native-picker/picker';
 
+const DEFAULT_PADDING = {top: 40, right: 40, bottom: 40, left: 40}
 
 export default function ShotTracker({ navigation }) {
   const [timestamp, setTimestamp] = useState(0)
-  const [trackingData, setTrackingData] = useState({end:{},start:{},timestamp:0,club:"8I"});
   const [watchID, setWatchID] = useState(false);
   const [clubUsed, setClubUsed] = useState('9I');
-  const [distance, setDistance] = useState(null);
+  const [trackingData, setTrackingData] = useState({end:{latitude: 53.3153612, longitude: -0.4857597},start:{latitude: 53.3153612, longitude: -0.4857597},timestamp:0,club:"8I"});
 
   useEffect(() => {
     (async () => {
@@ -38,15 +39,6 @@ export default function ShotTracker({ navigation }) {
     console.log('start tracking data: ', trackingData)
     setTrackingData(trackingData);
   };
-  const getEndCoordinates = (position) => {
-    const g = {latitude: position.coords.latitude,
-      longitude: position.coords.longitude};
-    trackingData.end = g;
-    console.log('end tracking data: ', trackingData)
-    setTrackingData(trackingData);
-  };
-
-
 
   const startTracking = () => {
     setTimestamp(Date.now())
@@ -54,6 +46,7 @@ export default function ShotTracker({ navigation }) {
     //TODO 2: Get watch id from navigator.geolocation.watchPosition and set this using setWatchID
     navigator.geolocation.getCurrentPosition(getStartCoordinates, onGeolocationError, {});
     setWatchID(navigator.geolocation.watchPosition(onGeolocation, onGeolocationError, {}));
+    
   };
 
   const stopTracking = () => {
@@ -114,6 +107,7 @@ const fitAllMarkers = (coords) => {
 return (
   <View style={styles.container}>
     <Picker selectedValue={clubUsed} 
+      style={styles.picker}
       onValueChange={(itemValue, itemIndex) =>
       setClubUsed(itemValue)
       }>
@@ -124,8 +118,24 @@ return (
         })}
 
     </Picker>
+    {/* customMapStyle={mapStyle} */}
+    <MapView
+        // style={{mapStyle}.map}
+        flex={1}
+        mapType='satellite'
+        initialRegion={{
+          latitude: 53.3153612,
+          longitude: -0.4857597,
+          latitudeDelta: 0.01,
+          longitudeDelta: 0.015,
+        }}
+        showsUserLocation={true}
+        provider={PROVIDER_GOOGLE}
+        ref={(ref) => {googlemap = ref;}}
+        >
+      </MapView>
 
-    {watchID ?
+    {/* {watchID ?
       <Submit>
         <TouchButton onPress={stopTracking}>
           <BtnText>STOP</BtnText>
@@ -135,17 +145,6 @@ return (
       <View style={{ paddingLeft: "5%" }}> 
         <ItemsLayout>
           <Holder>
-          {/* <Picker selectedValue={clubUsed} 
-          onValueChange={(itemValue, itemIndex) =>
-          setClubUsed(itemValue)
-          }>
-            {Object.keys(clubList).map((key) => {
-              return (
-                <Picker.Item label={clubList[key]} value={key} key={key}></Picker.Item>
-              )
-            })}
-
-          </Picker> */}
                 <Submit>
               <TouchButton title="Track" onPress={startTracking}>
                 <BtnText>Track</BtnText>
@@ -154,7 +153,23 @@ return (
           </Holder>
         </ItemsLayout>
       </View>
-    </RowStyle> }
+    </RowStyle> } */}
+
+      {watchID ?
+        <View style={styles.bottomContainer}>
+          <TouchableOpacity onPress={stopTracking} style={styles.buttonShared}>
+            <Text style={styles.buttonText}>End Shot</Text>
+          </TouchableOpacity>
+          <View style={styles.distanceContainer}>
+            <Text style={styles.distanceText}>{calculateDistance(trackingData)} Yards</Text>
+          </View>
+        </View>
+      :
+          <TouchableOpacity onPress={startTracking} style={styles.button}>
+            <Text style={styles.buttonText}>Track Shot</Text>
+          </TouchableOpacity>
+      }
+
 </View>
 );
 }
@@ -166,67 +181,49 @@ const styles = StyleSheet.create({
   map: {
     flex: 1,
   },
-  buttonContainer: {
-    position: 'absolute',
-    bottom: 20,
-    alignSelf: 'center',
+  picker: {
+    backgroundColor: 'green',
+    color: 'white',
   },
-  buttonsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    position: 'absolute',
-    bottom: 80,
+  buttonText: {
+    color: 'white',
+    fontSize: 25,
+    lineHeight: 30,
+  },
+  button: {
+    height: 50,
     width: '100%',
+    justifyContent:'center',
+    alignItems:'center',
+    backgroundColor: 'green',
+    marginRight: 2,
+  },
+  buttonShared: {
+    height: 50,
+    width: '75%',
+    justifyContent:'center',
+    alignItems:'center',
+    backgroundColor: 'green',
+    marginRight: 2,
+  },
+  bottomContainer: {
+    flexDirection: 'row',
   },
   distanceContainer: {
-    position: 'absolute',
-    top: 20,
-    alignSelf: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.8)',
-    padding: 10,
-    borderRadius: 5,
-  },
-  
-  dropdownButtonStyle: {
-    width: 200,
     height: 50,
-    backgroundColor: '#E9ECEF',
-    borderRadius: 12,
-    flexDirection: 'row',
-    paddingHorizontal: 12,
+    width: '25%',
+    justifyContent:'center',
+    alignItems:'center',
+    backgroundColor: 'green',
+    marginleft: 2,
   },
-  dropdownButtonTxtStyle: {
-    flex: 1,
-    fontSize: 18,
-    fontWeight: '500',
-    color: '#000',
+  distanceText: {
+    fontSize: 25,
+    justifyContent:'center',
+    alignItems:'center',
+    color: 'white',
   },
-  dropdownButtonArrowStyle: {
-    fontSize: 28,
-  },
-  dropdownButtonIconStyle: {
-    fontSize: 28,
-    marginRight: 8,
-  },
-  dropdownMenuStyle: {
-    backgroundColor: '#E9ECEF',
-    borderRadius: 8,
-  },
-  dropdownItemStyle: {
-    width: '100%',
-    flexDirection: 'row',
-    paddingHorizontal: 12,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: 8,
-  },
-  dropdownItemTxtStyle: {
-    flex: 1,
-    fontSize: 18,
-    fontWeight: '500',
-    color: '#000',
-  },
+
 });
 
 const Container = styled.View`
@@ -234,7 +231,7 @@ const Container = styled.View`
   background: white;
 `;
 const Holder = styled.View`
-padding-top: 100px;
+  padding-top: 100px;
   flex: 1;
   flex-direction: row;
   flex-wrap: wrap;
@@ -268,17 +265,15 @@ const ItemsLayout = styled.View`
   width: 100%;
 `;
 
-const TouchButton = styled.TouchableOpacity`background:black;`;
+const TouchButton = styled.TouchableOpacity``;
 
 const Submit = styled.View`
   flex: 1;
   height: 50px;
   width: 100%;
   border-radius: 15px;
-  margin-right: 20px;
   padding: 10px;
-  background: ${colours.red};
-  height: 50px;
+  background: ${colours.green};
 `;
 
 const HeaderText = styled.Text`
@@ -295,8 +290,8 @@ const BodyText = styled.Text`
   margin: 20px 20px;
 `;
 const BtnText = styled.Text`
-  color: pink;
-  font-size: 15px;
+  color: white;
+  font-size: 25px;
   text-align: center;
   line-height: 30px;
 `;
@@ -320,60 +315,3 @@ const Subtitle = styled.Text`
   padding-left: 15px;
   padding-top: 15px;
 `;
-
-  // useEffect(() => {
-  //   // Fetch current location when component mounts
-  //   getCurrentLocation();
-  // }, []);
-
-  // const getCurrentLocation = () => {
-  //   // Fetch current GPS location here
-  //   // For simplicity, let's assume getCurrentLocation function updates `currentLocation` state
-  //   // with the current GPS location
-  //   // You can use Geolocation API or any other method to fetch current location
-  //   // For example:
-  //   navigator.geolocation.getCurrentPosition(
-  //     position => {
-  //       const { latitude, longitude } = position.coords;
-  //       setCurrentLocation({ latitude, longitude });
-  //     },
-  //     error => console.log(error.message),
-  //     { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-  //   );
-  // };
-
-  // const handleDiscard = () => {
-  //   // Discard the distance and clear markers
-  //   setMarkers([]);
-  //   setDistance(null);
-  //   setShowButtons(false);
-  // };
-
-   {/* <SelectDropdown
-    data={Object.keys(clubDistances)}
-    onSelect={(selectedItem, index) => {
-      console.log(selectedItem, index);
-    }}
-    renderButton={(selectedItem, isOpened) => {
-      return (
-        <View style={styles.dropdownButtonStyle}>
-          {selectedItem && (
-            <Icon name={selectedItem.icon} style={styles.dropdownButtonIconStyle} />
-          )}
-          <Text style={styles.dropdownButtonTxtStyle}>
-            {(selectedItem && selectedItem.title) || 'Select Club'}
-          </Text>
-          <Icon name={isOpened ? 'chevron-up' : 'chevron-down'} style={styles.dropdownButtonArrowStyle} />
-        </View>
-      );
-    }}
-    renderItem={(item, index, isSelected) => {
-      return (
-        <View style={{...styles.dropdownItemStyle, ...(isSelected && {backgroundColor: '#D2D9DF'})}}>
-          <Text style={styles.dropdownItemTxtStyle}>{item.title}</Text>
-        </View>
-      );
-    }}
-    showsVerticalScrollIndicator={false}
-    dropdownStyle={styles.dropdownMenuStyle}
-  /> */}

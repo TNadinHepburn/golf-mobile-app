@@ -83,7 +83,7 @@ const Container = styled.View`
 
 
 const Body = styled.ScrollView`
-  background: #000;
+  background: green;
   height: 100%;
   width: 100%;
   border-top-right-radius: 5px;
