@@ -16,12 +16,10 @@ export default function ScorecardHistory({ route, navigation }) {
       try {
         const value = await AsyncStorage.getItem('scorecards');
         if (value === null) {
-          // TODO 1: use AsyncStorage.setItem to save demoRoutes under the key 'routes' in Async Storage and then call retrieveHistory.
           await AsyncStorage.setItem('scorecards', JSON.stringify(demoRound));
           retrieveHistory();
         }
         else {
-          // TODO 2: use JSON.parse to convert the JSON string to an object and use set this value as history.
           setHistory(JSON.parse(value));
         }
       } 
@@ -99,7 +97,7 @@ const Container = styled.View`
 
 
 const Body = styled.ScrollView`
-  background: #000;
+  background: green;
   height: 100%;
   width: 100%;
   border-top-right-radius: 5px;
