@@ -32,7 +32,7 @@ export default function ScorecardHistory({ route, navigation }) {
         return data.reduce((total,obj) => total + obj.par, 0);
     }
     const calculateScore = (data) => {
-        return data.reduce((total,obj) => total + parseInt(obj.score), 0);
+        return data.reduce((total,obj) => total + (isNaN(parseInt(obj.score)) ? 0 : parseInt(obj.score)), 0);
     }
 
     useEffect(() => {
@@ -47,7 +47,7 @@ export default function ScorecardHistory({ route, navigation }) {
     return (
         <Container>
           <Body>
-            <HeaderText>My Shots</HeaderText>
+            <HeaderText>Saved Rounds</HeaderText>
             <View>
               <RowStyle style={{paddingLeft: 10, paddingRight: 10}}>
                 <ColumnStyle key="th1">
@@ -62,7 +62,7 @@ export default function ScorecardHistory({ route, navigation }) {
               </RowStyle>
               <DivideHeader />
               {Object.keys(history).map((item) => (
-              <TouchableOpacity key={item} onPress={() => navigation.navigate("ScorecardView", { scorecard: history[item] })}> 
+              <TouchableOpacity key={item} onPress={() => navigation.navigate("ScorecardView", { scorecard: history[item], timestamp: timestampToDate(parseInt(item)) })}> 
                   <RowStyle>
                     <ColumnStyle key="col1">
                       <ColumnText>{timestampToDate(parseInt(item))}</ColumnText>

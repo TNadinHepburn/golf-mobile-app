@@ -1,7 +1,6 @@
-import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Button } from 'react-native';
 import { useState, useEffect  } from 'react';
 import { clubFromID, clubList } from '../components/ClubFromID';
-import { calculateDistance } from '../components/CalculateDistance';
 import MapView, {Marker, Polyline, PROVIDER_GOOGLE} from 'react-native-maps';
 import mapStyle from '../components/MapStyle'
 import SelectDropdown from 'react-native-select-dropdown'
@@ -39,7 +38,7 @@ export default function ShotTracker({ navigation }) {
     console.log('start tracking data: ', trackingData)
     setTrackingData(trackingData);
   };
-
+  
   const startTracking = () => {
     setTimestamp(Date.now())
     trackingData.timestamp = timestamp
@@ -50,12 +49,10 @@ export default function ShotTracker({ navigation }) {
   };
 
   const stopTracking = () => {
-    
     navigator.geolocation.clearWatch(watchID);
     // Store the new route
     trackingData.club = clubUsed
     setTrackingData(trackingData)
-    // navigator.geolocation.getCurrentPosition(getEndCoordinates, onGeolocationError, {});
     
     storeShot();
 
@@ -104,8 +101,44 @@ const fitAllMarkers = (coords) => {
   }
 }
 
+// customMapStyle={mapStyle}      
 return (
   <View style={styles.container}>
+    {/* <View>
+      <MapView
+        customMapStyle={mapStyle}
+        initialRegion={{
+          latitude: 53.229850,
+          longitude: -0.553690,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        }}
+        // mapType='satellite'
+        provider={PROVIDER_GOOGLE}
+        ref={(ref) => {googlemap = ref;}}
+      >
+      </MapView>
+    </View> */}
+
+    {watchID ?
+      <Submit>
+        <TouchButton onPress={stopTracking}>
+          <BtnText>End Shot</BtnText>
+        </TouchButton>
+      </Submit>
+    : <RowStyle>
+      <View style={{ paddingLeft: "5%" }}> 
+        <ItemsLayout>
+          <Holder>
+                <Submit>
+              <TouchButton title="Track" onPress={startTracking}>
+                <BtnText>Track Shot</BtnText>
+              </TouchButton>
+                </Submit>
+          </Holder>
+        </ItemsLayout>
+      </View>
+    </RowStyle> }
     <Picker selectedValue={clubUsed} 
       style={styles.picker}
       onValueChange={(itemValue, itemIndex) =>
@@ -118,7 +151,7 @@ return (
         })}
 
     </Picker>
-    {/* customMapStyle={mapStyle} */}
+    
     <MapView
         // style={{mapStyle}.map}
         flex={1}
