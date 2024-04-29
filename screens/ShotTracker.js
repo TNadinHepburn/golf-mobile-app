@@ -1,6 +1,6 @@
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { useState, useEffect  } from 'react';
-import { clubFromID, clubList } from '../components/ClubFromID';
+import { clubList } from '../components/ClubFromID';
 import MapView, {Marker, Polyline, PROVIDER_GOOGLE} from 'react-native-maps';
 import mapStyle from '../components/MapStyle'
 import { calculateDistance } from '../components/CalculateDistance'
@@ -13,7 +13,7 @@ import {Picker} from '@react-native-picker/picker';
 
 const DEFAULT_PADDING = {top: 40, right: 40, bottom: 40, left: 40}
 
-export default function ShotTracker({ navigation }) {
+export default function ShotTracker() {
   const [timestamp, setTimestamp] = useState(0)
   const [watchID, setWatchID] = useState(false);
   const [clubUsed, setClubUsed] = useState('9I');
@@ -29,13 +29,10 @@ export default function ShotTracker({ navigation }) {
     })();
   }, []);
 
-  const geolocationPositionOpts = {useSignificantChanges: true};
-
   const getStartCoordinates = (position) => {
     const g = {latitude:position.coords.latitude,
       longitude:position.coords.longitude};
     trackingData.start = g;
-    console.log('start tracking data: ', trackingData)
     setTrackingData(trackingData);
   };
   
@@ -59,7 +56,7 @@ export default function ShotTracker({ navigation }) {
     //Reset state
     setWatchID(false);
     setTimestamp(0);
-    setTrackingData({end:{latitude: 53.3153612, longitude: -0.4857597},start:{latitude: 53.3153612, longitude: -0.4857597},timestamp:0,club:"8I"});
+    setTrackingData({end:{},start:{},timestamp:0,club:"8I"});
 
   };
 
@@ -86,7 +83,6 @@ export default function ShotTracker({ navigation }) {
                latitude: position.coords.latitude};
 
     trackingData.end = g;
-    console.log('geoupdate: ', trackingData)
     setTrackingData(trackingData);  
   };
 
@@ -94,13 +90,6 @@ export default function ShotTracker({ navigation }) {
     alert('Geolocation error', JSON.stringify(positionError)); 
   };
   
-const fitAllMarkers = (coords) => {
-  googlemap.fitToCoordinates(coords), {
-    edgePadding: DEFAULT_PADDING,
-    animated: true
-  }
-}
-
 // customMapStyle={mapStyle}      
 return (
   <View style={styles.container}>
@@ -137,9 +126,9 @@ return (
           <TouchableOpacity onPress={stopTracking} style={styles.buttonShared}>
             <Text style={styles.buttonText}>End Shot</Text>
           </TouchableOpacity>
-          <View style={styles.distanceContainer}>
+          {/* <View style={styles.distanceContainer}>
             <Text style={styles.distanceText}>{calculateDistance(trackingData)} Yards</Text>
-          </View>
+          </View> */}
         </View>
       :
           <TouchableOpacity onPress={startTracking} style={styles.button}>

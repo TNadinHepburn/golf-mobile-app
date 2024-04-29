@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 // import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native'; 
 import { createStackNavigator } from '@react-navigation/stack'; 
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import 'react-native-gesture-handler';
 
 import Home from './screens/Home';
@@ -22,15 +21,17 @@ export default function App() {
   const HomeStack = () => {
     const Stack = createStackNavigator();
     return (
-     <Stack.Navigator>
-         <Stack.Screen name="Home" component={Home}></Stack.Screen>
-         <Stack.Screen name="Scorecard" component={Scorecard}></Stack.Screen>
-         <Stack.Screen name="ScorecardHistory" component={ScorecardHistory}></Stack.Screen>
-         <Stack.Screen name="ScorecardView" component={ScorecardView}></Stack.Screen>
-         <Stack.Screen name="SwingRecorder" component={SwingRecorder}></Stack.Screen>
-         <Stack.Screen name="SwingRecorderHistory" component={SwingRecorderHistory}></Stack.Screen>
-         <Stack.Screen name="ShotTracker" component={ShotTracker}></Stack.Screen>
-         <Stack.Screen name="ShotTrackerHistory" component={ShotTrackerHistory}></Stack.Screen>
+     <Stack.Navigator 
+      screenOptions={{
+    }}>
+         <Stack.Screen options={{ title: "FairwayFinder"}} name="Home" component={Home}></Stack.Screen>
+         <Stack.Screen options={{ title: "Play Round"}} name="Scorecard" component={Scorecard}></Stack.Screen>
+         <Stack.Screen options={{ title: "Previous Rounds"}} name="ScorecardHistory" component={ScorecardHistory}></Stack.Screen>
+         <Stack.Screen options={{ title: "Round Summary"}} name="ScorecardView" component={ScorecardView}></Stack.Screen>
+         <Stack.Screen options={{ title: "Record Swing"}} name="SwingRecorder" component={SwingRecorder}></Stack.Screen>
+         <Stack.Screen options={{ title: "View recorded swings"}} name="SwingRecorderHistory" component={SwingRecorderHistory}></Stack.Screen>
+         <Stack.Screen options={{ title: "Track a Shot"}} name="ShotTracker" component={ShotTracker}></Stack.Screen>
+         <Stack.Screen options={{ title: "Tracked Shots"}} name="ShotTrackerHistory" component={ShotTrackerHistory}></Stack.Screen>
      </Stack.Navigator>
     );
   }

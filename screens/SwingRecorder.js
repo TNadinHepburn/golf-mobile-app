@@ -5,6 +5,7 @@ import { Video } from 'expo-av';
 import * as FileSystem from 'expo-file-system';
 import { useIsFocused } from '@react-navigation/native'; 
 import { saveToLibraryAsync } from 'expo-media-library';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 // import VideoPlayer from 'react-native-native-video-player';
 
 
@@ -19,6 +20,7 @@ export default function SwingRecorder() {
   const [recording , setRecording] = useState(false);
   const [guide , setGuide] = useState(true);
   const [handed, setHanded] = useState(true);
+  const [isReady, setIsReady] = useState(false);
 
   const enableGuide = () => {
     setGuide(true)
@@ -31,24 +33,6 @@ export default function SwingRecorder() {
   const flipGuide = async () => {
     handed ? setHanded(false) : setHanded(true);
   };
-
-  const requestCameraPermissions = async () => {
-    if (statusCamera == null) {
-      await setHasCameraPermission();
-    }
-    else if (statusCamera.granted == false) {
-      alert('Camera permissions denied');
-    }
-  }
-
-  const requestAudioPermissions = async () => {
-    if (statusAudio == null) {
-      await setHasCameraPermission();
-    }
-    else if (statusAudio.granted == false) {
-      alert('Audio permissions denied');
-    }
-  }
 
   const ensureDirExists = async () => {
     const dirInfo = await FileSystem.getInfoAsync(VID_DIR);
@@ -95,10 +79,12 @@ export default function SwingRecorder() {
     requestAudioPermission();
     // requestLibraryPermission();
     ensureDirExists();
+    setIsReady(true);
   })
  
 
- 
+ if (isReady){
+  
   if (isFocused) {  
     
     if(videoURI){
@@ -121,8 +107,8 @@ export default function SwingRecorder() {
         :
         <View />
       } */}
-        <View style={styles.buttonContainer}>
-        <Button title={recording ? 'End Video' : 'Start Video'} onPress={recording ? endVideo : startVideo}></Button>
+      <View style={styles.buttonContainer}>
+      <TouchableOpacity onPress={recording ? endVideo : startVideo} style={styles.recoringButton}><Text>{recording ? 'End Video' : 'Start Video'}</Text></TouchableOpacity>
       {/* {guide ?
       <View>
       <Button title='flip guide' onPress={flipGuide}></Button>
@@ -131,7 +117,7 @@ export default function SwingRecorder() {
       :
       <Button title='enable guide' onPress={enableGuide}></Button>
     } */}
-    </View>
+      </View>
     </Camera>
     );  
   }
@@ -144,6 +130,7 @@ export default function SwingRecorder() {
     return <View/>
   }
 
+ }
 }
 
 const styles = StyleSheet.create({
@@ -153,20 +140,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  // buttonContainer: {
-  //   flex: 2,
-  //   flexDirection: 'row',
-  // },
+  buttonContainer: {
+    flex: 1,
+    flexDirection: 'row',
+  },
   camera: {
     flex: 1,
     alignItems: 'centre',
     justifyContent: 'center',
   },
   buttonContainer: {
-    alignSelf: 'flex-end',
+    alignContent: 'center',
+    justifyContent: 'flex-end',
   },
   video: {
     flex: 1,
     alignSelf: 'strech',
+  },
+  recoringButton: {
+    color: 'red',
+    borderRadius: 15,
   },
 });
