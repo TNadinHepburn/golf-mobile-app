@@ -3,6 +3,7 @@ import { useState, useEffect  } from 'react';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 const windowWidth = Dimensions.get("window").width;
+const windowHeight = Dimensions.get("window").height;
 
 export default function Home({ navigation }) {
 
@@ -12,19 +13,19 @@ return (
       <TouchableOpacity 
         style={styles.card}
         onPress={() => navigation.navigate("ScorecardHistory")}>
-        {/* <Image style={styles.cardImage} source={require('../assets/previous_rounds.png')} /> */}
+        <Image style={styles.cardImage} source={require('../assets/previous_rounds.png')} />
           <Text style={styles.mediumText}>Previous Rounds</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.card}
         onPress={() => navigation.navigate("ShotTrackerHistory")}>
-          {/* <Image style={styles.cardImage} source={require('../assets/tracked_shots.png')} /> */}
+          <Image style={styles.cardImage} source={require('../assets/tracked_shots.png')} />
           <Text style={styles.mediumText}>Tracked Shots</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.card}
         onPress={() => navigation.navigate("SwingRecorderHistory")}>
-          {/* <Image style={styles.cardImage} source={require('../assets/recorded_swings.png')} /> */}
+          <Image style={styles.cardImage} source={require('../assets/recorded_swings.png')} />
           <Text style={styles.mediumText}>Recorded Swings</Text>
       </TouchableOpacity>
     </View>
@@ -62,7 +63,7 @@ const styles = StyleSheet.create({
   cardContainer: {
     flex: 1,
     width: '100%',
-    justifyContent: 'stretch',
+    justifyContent: 'space-evenly',
   },
   card: {
     backgroundColor: '#3bc45b',
@@ -88,14 +89,19 @@ const styles = StyleSheet.create({
   },
   cardImage: {
     width: undefined,
-    height: undefined,
+    height: windowHeight * 0.15,
     aspectRatio: 1,
-    resizeMode: 'center'
+    // resizeMode: 'center',
   },
   smallText: {
     fontSize: 18,
   },
   mediumText: {
     fontSize: 28,
+    fontWeight: '600',
+  },
+  subText: {
+    fontSize: 18,
+    fontWeight: '300',
   },
 });

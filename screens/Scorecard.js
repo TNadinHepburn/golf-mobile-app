@@ -63,19 +63,19 @@ export default function Scorecard({ navigation }) {
                   <ColumnTextInput
                     keyboardType='numeric'
                     maxLength={2}
-                    onChangeText={text => updateScore(text,data.hole)}>
+                    onChangeText={text => updateScore(text,data.hole)}
+                    placeholder={'0'}>
                     {data.score}
                     </ColumnTextInput> 
                 </ColumnStyle>
                 </RowStyle>
               </View>)
             })}
-            <DivideBody />
-        <RowStyle>
+        <View style={styles.navButtons}>
           <TouchButton onPress={storeSorecard}><BtnText>Save Round</BtnText></TouchButton>
           <TouchButton onPress={() => navigation.navigate("ShotTracker")}><BtnText>Track Shot</BtnText></TouchButton>
           <TouchButton onPress={() => navigation.navigate("SwingRecorder")}><BtnText>Record Swing</BtnText></TouchButton>
-        </RowStyle>
+        </View>
       </Body>
     </Container>
   );
@@ -110,6 +110,11 @@ const styles = StyleSheet.create({
     marginBottom: 10,
 
   },
+  navButtons: {
+    flex:1,
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+  }
 });
 
 
@@ -161,6 +166,7 @@ const ColumnTextInput = styled.TextInput`
   font-size: 14px;
   font-weight: bold;
   width: 100%;
+  borderColor: #000;
 `;
 
 const Divide = styled.View`

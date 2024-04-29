@@ -3,8 +3,8 @@ import { useState, useEffect  } from 'react';
 import { clubFromID, clubList } from '../components/ClubFromID';
 import MapView, {Marker, Polyline, PROVIDER_GOOGLE} from 'react-native-maps';
 import mapStyle from '../components/MapStyle'
-import SelectDropdown from 'react-native-select-dropdown'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { calculateDistance } from '../components/CalculateDistance'
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import styled from 'styled-components';
 import colours from '../components/Colours';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -59,7 +59,7 @@ export default function ShotTracker({ navigation }) {
     //Reset state
     setWatchID(false);
     setTimestamp(0);
-    setTrackingData([]);
+    setTrackingData({end:{latitude: 53.3153612, longitude: -0.4857597},start:{latitude: 53.3153612, longitude: -0.4857597},timestamp:0,club:"8I"});
 
   };
 
@@ -86,7 +86,7 @@ export default function ShotTracker({ navigation }) {
                latitude: position.coords.latitude};
 
     trackingData.end = g;
-    console.log('geoupdaet: ', trackingData)
+    console.log('geoupdate: ', trackingData)
     setTrackingData(trackingData);  
   };
 
@@ -104,41 +104,6 @@ const fitAllMarkers = (coords) => {
 // customMapStyle={mapStyle}      
 return (
   <View style={styles.container}>
-    {/* <View>
-      <MapView
-        customMapStyle={mapStyle}
-        initialRegion={{
-          latitude: 53.229850,
-          longitude: -0.553690,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        }}
-        // mapType='satellite'
-        provider={PROVIDER_GOOGLE}
-        ref={(ref) => {googlemap = ref;}}
-      >
-      </MapView>
-    </View> */}
-
-    {watchID ?
-      <Submit>
-        <TouchButton onPress={stopTracking}>
-          <BtnText>End Shot</BtnText>
-        </TouchButton>
-      </Submit>
-    : <RowStyle>
-      <View style={{ paddingLeft: "5%" }}> 
-        <ItemsLayout>
-          <Holder>
-                <Submit>
-              <TouchButton title="Track" onPress={startTracking}>
-                <BtnText>Track Shot</BtnText>
-              </TouchButton>
-                </Submit>
-          </Holder>
-        </ItemsLayout>
-      </View>
-    </RowStyle> }
     <Picker selectedValue={clubUsed} 
       style={styles.picker}
       onValueChange={(itemValue, itemIndex) =>
@@ -149,7 +114,6 @@ return (
             <Picker.Item label={clubList[key]} value={key} key={key}></Picker.Item>
           )
         })}
-
     </Picker>
     
     <MapView
@@ -167,26 +131,6 @@ return (
         ref={(ref) => {googlemap = ref;}}
         >
       </MapView>
-
-    {/* {watchID ?
-      <Submit>
-        <TouchButton onPress={stopTracking}>
-          <BtnText>STOP</BtnText>
-        </TouchButton>
-      </Submit>
-    : <RowStyle>
-      <View style={{ paddingLeft: "5%" }}> 
-        <ItemsLayout>
-          <Holder>
-                <Submit>
-              <TouchButton title="Track" onPress={startTracking}>
-                <BtnText>Track</BtnText>
-              </TouchButton>
-                </Submit>
-          </Holder>
-        </ItemsLayout>
-      </View>
-    </RowStyle> } */}
 
       {watchID ?
         <View style={styles.bottomContainer}>
@@ -231,30 +175,31 @@ const styles = StyleSheet.create({
     backgroundColor: 'green',
     marginRight: 2,
   },
+  bottomContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   buttonShared: {
+    flex: 1,
     height: 50,
-    width: '75%',
     justifyContent:'center',
     alignItems:'center',
     backgroundColor: 'green',
     marginRight: 2,
   },
-  bottomContainer: {
-    flexDirection: 'row',
-  },
   distanceContainer: {
+    flex: 1,
     height: 50,
-    width: '25%',
     justifyContent:'center',
     alignItems:'center',
     backgroundColor: 'green',
     marginleft: 2,
   },
   distanceText: {
-    fontSize: 25,
-    justifyContent:'center',
-    alignItems:'center',
     color: 'white',
+    fontSize: 25,
+    lineHeight: 30,
   },
 
 });
