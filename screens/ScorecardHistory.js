@@ -9,7 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import demoRound from '../components/Card9HoleExample.json';
 
-export default function ScorecardHistory({ route, navigation }) {
+export default function ScorecardHistory({ navigation }) {
     const [history, setHistory] = useState({})
   
     const retrieveHistory = async () => {
@@ -129,7 +129,7 @@ const ColumnStyle = styled.View`
 
 const ColumnText = styled.Text`
   color: #fff;
-  font-size: 14px;
+  font-size: 10px;
   font-weight: bold;
   width: 100%;
 `;

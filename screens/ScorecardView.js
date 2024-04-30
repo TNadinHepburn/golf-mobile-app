@@ -3,7 +3,7 @@ import { StyleSheet, View, Text } from 'react-native';
 import styled from 'styled-components';
 
 
-export default function ScorecardView({ route, navigation }) {
+export default function ScorecardView({ route }) {
     const {scorecard, timestamp} = route.params;
     console.log(timestamp);
     return(
