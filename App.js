@@ -11,6 +11,7 @@ import ScorecardHistory from './screens/ScorecardHistory';
 import ScorecardView from './screens/ScorecardView';
 import SwingRecorder from './screens/SwingRecorder';
 import SwingRecorderHistory from './screens/SwingRecorderHistory';
+import SwingRecorderView from './screens/SwingRecorderView';
 import ShotTracker from './screens/ShotTracker';
 import ShotTrackerHistory from './screens/ShotTrackerHistory';
 import * as Location from 'expo-location';
@@ -30,6 +31,7 @@ export default function App() {
          <Stack.Screen options={{ title: "Round Summary"}} name="ScorecardView" component={ScorecardView}></Stack.Screen>
          <Stack.Screen options={{ title: "Record Swing"}} name="SwingRecorder" component={SwingRecorder}></Stack.Screen>
          <Stack.Screen options={{ title: "View recorded swings"}} name="SwingRecorderHistory" component={SwingRecorderHistory}></Stack.Screen>
+         <Stack.Screen options={{ title: "Swing"}} name="SwingRecorderView" component={SwingRecorderView}></Stack.Screen>
          <Stack.Screen options={{ title: "Track a Shot"}} name="ShotTracker" component={ShotTracker}></Stack.Screen>
          <Stack.Screen options={{ title: "Tracked Shots"}} name="ShotTrackerHistory" component={ShotTrackerHistory}></Stack.Screen>
      </Stack.Navigator>
