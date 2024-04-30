@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Dimensions } from 'react-native';
 import { useState, useEffect  } from 'react';
 import { clubList } from '../components/ClubFromID';
 import MapView, {Marker, Polyline, PROVIDER_GOOGLE} from 'react-native-maps';
@@ -10,6 +10,8 @@ import colours from '../components/Colours';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Location from 'expo-location';
 import {Picker} from '@react-native-picker/picker';
+const windowWidth = Dimensions.get("window").width;
+const windowHeight = Dimensions.get("window").height;
 
 const DEFAULT_PADDING = {top: 40, right: 40, bottom: 40, left: 40}
 
@@ -126,9 +128,9 @@ return (
           <TouchableOpacity onPress={stopTracking} style={styles.buttonShared}>
             <Text style={styles.buttonText}>End Shot</Text>
           </TouchableOpacity>
-          {/* <View style={styles.distanceContainer}>
+          <View style={styles.distanceContainer}>
             <Text style={styles.distanceText}>{calculateDistance(trackingData)} Yards</Text>
-          </View> */}
+          </View>
         </View>
       :
           <TouchableOpacity onPress={startTracking} style={styles.button}>
@@ -165,21 +167,22 @@ const styles = StyleSheet.create({
     marginRight: 2,
   },
   bottomContainer: {
+    flexShrink:1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
   },
   buttonShared: {
-    flex: 1,
     height: 50,
+    width: windowWidth * 0.75,
     justifyContent:'center',
     alignItems:'center',
     backgroundColor: 'green',
     marginRight: 2,
   },
   distanceContainer: {
-    flex: 1,
     height: 50,
+    width: windowWidth * 0.25,
     justifyContent:'center',
     alignItems:'center',
     backgroundColor: 'green',

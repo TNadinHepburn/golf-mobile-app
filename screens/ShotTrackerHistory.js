@@ -115,7 +115,7 @@ const ColumnStyle = styled.View`
 
 const ColumnText = styled.Text`
   color: #fff;
-  font-size: 14px;
+  font-size: 10px;
   font-weight: bold;
   width: 100%;
 `;
